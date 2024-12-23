@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title_block %} 
+    {{ title }} 
+{% endblock %}
+{% block css_block %}
+    <style>
+        .sign-up-form {
+            margin-top: 30px;
+            margin-bottom:30px;
+            width: 40%;
+            margin-left: auto;
+            margin-right: auto;
+            border: 1px solid #d1cece;
+            padding: 20px;
+            border-radius: 10px;
+            
+        }
+        .login {
+            text-align: center;
+            margin-top: 20px;
+        }   
+    </style>
+{% endblock %}
+{% block body_block %}
+<div class="sign-up-form">
+    <h3 class="signUpTitle">Sign up to see your friends. </h3>
+    <form method="POST">
+        {{ form|crispy }}
+        {% csrf_token %}
+        <button type="submit" style="width: 100%;" class="btn btn-primary">Sign Up</button>
+    </form>
+</div>
+<div class="login">
+    <p>Already have an account? <a href="#">Login</a></p>
+</div>
+{% endblock %}

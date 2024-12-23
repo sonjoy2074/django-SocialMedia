@@ -18,7 +18,7 @@ SECRET_KEY = 'n$v4!xds4ln4x+!9q^hzf87t86650gzgsm##=zb_hj08u!t7&6'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Application definition
 
@@ -30,7 +30,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'App_Login',
+    'crispy_forms',
+    'crispy_bootstrap5',
 ]
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
