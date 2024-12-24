@@ -2,10 +2,12 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-
+from App_Post import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('App_Login.urls')),
+    path('post/', include('App_Post.urls')),
+    path('', views.home, name='home'),
 ]
 
 # Serve static files during development

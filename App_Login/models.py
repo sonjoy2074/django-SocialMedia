@@ -11,3 +11,7 @@ class UserProfile(models.Model):
     
     def __str__(self):
         return self.user.username
+class Follow(models.Model):
+    following = models.ForeignKey(User,on_delete=models.CASCADE,related_name='following')
+    follower = models.ForeignKey(User,on_delete=models.CASCADE,related_name='follower')
+    created_date=models.DateTimeField(auto_now_add=True)
