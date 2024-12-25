@@ -28,18 +28,18 @@
           </li>
           <li class="nav-item">
             {% if user.user_profile.profile_pic %}
-            <a class="nav-link" href="#"><img src="/media/{{user.user_profile.profile_pic}}" alt=""
+            <a class="nav-link" href="{% url 'App_Login:profile' %}"><img src="/media/{{user.user_profile.profile_pic}}" alt=""
               width="40px" height="40px" style="border-radius: 50%;"
               ></a>
             {% else %}
-            <a class="nav-link" href="#" width="40px" height="40px"style="border-radius: 50%"><img src="/media/profile_pics/default.jpg" alt=""></a>
+            <a class="nav-link" href="{% url 'App_Login:profile' %}" width="40px" height="40px"style="border-radius: 50%"><img src="/media/profile_pics/default.jpg" alt=""></a>
             {% endif %}
           </li>
         </ul>
       </div>
     </div>
   </nav>
-    <div class="container">
+    <div class="container" style="padding-top:20px;">
         {% block body_block %}
         <!-- Content goes here -->
         {% endblock %}

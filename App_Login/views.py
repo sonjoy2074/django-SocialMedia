@@ -50,3 +50,7 @@ def edit_profile(request):
 def logout_user(request):
     logout(request)
     return HttpResponseRedirect(reverse('App_Login:login'))
+
+@login_required
+def profile(request):
+    return render(request, 'App_Login/user.html', {'title': 'Profile'})
