@@ -6,8 +6,7 @@ from App_Login.models import UserProfile
 from django.contrib.auth.forms import AuthenticationForm
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
-
-
+from App_Post.forms import PostForm
 def sign_up(request):
     form = CreateNewUser()
     registered = False
@@ -53,4 +52,12 @@ def logout_user(request):
 
 @login_required
 def profile(request):
-    return render(request, 'App_Login/user.html', {'title': 'Profile'})
+    form=PostForm()
+    if request.method == 'POST':
+        form=PostForm(request.POST,request.FILES)
+        if form.is_valid():
+            post=form.save(commit=False)
+            post.author=request.user
+            post.save()
+            return HttpResponseRedirect(reverse('App_Post:home'))
+    return render(request, 'App_Login/user.html', context={'title': 'Profile' , 'form': form})
