@@ -1,7 +1,7 @@
 {% extends 'navbar.html' %}
 {% load crispy_forms_tags %}
 {% block title_block %} 
-    {{ user.user_profile.full_name }} (@{{ user.username }}) 
+    {{ user_profile.user_profile.full_name }} (@{{ user_profile.username }}) 
 {% endblock %}
 {% block css_block %}
 <style>
@@ -70,57 +70,31 @@
 {% block body_block %}
 <div class="profile-header">
     <div>
-        {% if user.user_profile.profile_pic %}
-        <img src="/media/{{user.user_profile.profile_pic}}" alt="" width="150px" height="150px">
+        {% if user_profile.user_profile.profile_pic %}
+        <img src="/media/{{user_profile.user_profile.profile_pic}}" alt="" width="150px" height="150px">
         {% else %}
         <img src="/media/profile_pics/default.jpg" alt="" width="150px" height="150px">
         {% endif %}
     </div>
     <div>
-        <h2>@{{ user.username }} 
-            <a href="{% url 'App_Login:edit_profile' %}" class="btn btn-primary btn-sm">Edit Profile</a>
+        <h2>@{{ user_profile.username }} &nbsp;
+            {% if not already_followed %}
+            <a href="{% url 'App_Login:follow' username=user_profile %}" class="btn btn-primary">Follow</a>
+            {% else %}
+            <a href="{% url 'App_Login:unfollow' username=user_profile %}" class="btn btn-danger">Unfollow</a>
+            {% endif %}
         </h2>
         <div class="profile-stats">
-            <h4><span>{{ user.posts.count }}</span> Posts</h4>
-            <h4><span>{{ user.following.count }}</span> Followers</h4>
-            <h4><span>{{ user.follower.count }}</span> Following</h4>
+            <h4><span>{{ user_profile.posts.count }}</span> Posts</h4>
+            <h4><span>{{ user_profile.following.count }}</span> Followers</h4>
+            <h4><span>{{ user_profile.follower.count }}</span> Following</h4>
         </div>
-        <h3>{{ user.user_profile.full_name }}</h3>
-        <p>{{ user.user_profile.description|linebreaks }}</p>
+        <h3>{{ user_profile.user_profile.full_name }}</h3>
+        <p>{{ user_profile.user_profile.description|linebreaks }}</p>
     </div>
 </div>
-<hr>
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
-    New Post
-</button>
-
-<!-- The Modal -->
-<div class="modal fade" id="myModal">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <h4 class="modal-title">Post a Photo</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <!-- Modal Body -->
-            <div class="modal-body">
-                <form method="POST" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    {{ form|crispy }}
-                    <button type="submit" class="btn btn-primary">Post</button>
-                </form>
-            </div>
-            <!-- Modal Footer -->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <div class="post-grid">
-    {% for post in user.posts.all %}
+    {% for post in user_profile.posts.all %}
     <div class="post-item">
         <img src="/media/{{post.image}}" alt="Post Image">
         <div class="post-details">

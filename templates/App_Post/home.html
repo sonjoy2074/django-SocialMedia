@@ -7,5 +7,27 @@
 
 {% endblock %}
 {% block body_block %}
- <h1>Home page</h1>
+ {% if search %}
+    {% for user in result%}
+    <div class="row">
+        <div class="col-sm-2">
+            {% if user.user_profile.profile_pic %}
+            <img src="/media/{{user.user_profile.profile_pic}}" alt=""
+              width="80px" height="80px" style="border-radius: 50%;"
+              >
+            {% else %}
+            <img src="/media/profile_pics/default.jpg" alt="" width="80px" height="80px"style="border-radius: 50%">
+            {% endif %}
+        </div>
+        <div class="col-sm-10">
+            <a href="{% url 'App_Login:user_profile' username=user.username%}">{{user.username}}</a>
+            <br>
+            {{user.user_profile.full_name}}
+        </div>
+    </div>
+
+    {% endfor %}
+{% else %}
+
+{% endif%}
 {% endblock %}
