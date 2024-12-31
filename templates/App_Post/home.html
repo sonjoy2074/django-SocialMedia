@@ -7,27 +7,70 @@
 
 {% endblock %}
 {% block body_block %}
- {% if search %}
-    {% for user in result%}
-    <div class="row">
+<div class="container">
+    {% if search %}
+    <!-- Search Results -->
+    {% for user in result %}
+    <div class="row my-3">
         <div class="col-sm-2">
             {% if user.user_profile.profile_pic %}
-            <img src="/media/{{user.user_profile.profile_pic}}" alt=""
-              width="80px" height="80px" style="border-radius: 50%;"
-              >
+            <img src="/media/{{ user.user_profile.profile_pic }}" alt="" width="80px" height="80px" style="border-radius: 50%;">
             {% else %}
-            <img src="/media/profile_pics/default.jpg" alt="" width="80px" height="80px"style="border-radius: 50%">
+            <img src="/media/profile_pics/default.jpg" alt="" width="80px" height="80px" style="border-radius: 50%;">
             {% endif %}
         </div>
         <div class="col-sm-10">
-            <a href="{% url 'App_Login:user_profile' username=user.username%}">{{user.username}}</a>
+            <a href="{% url 'App_Login:user_profile' username=user.username %}">{{ user.username }}</a>
             <br>
-            {{user.user_profile.full_name}}
+            {{ user.user_profile.full_name }}
         </div>
     </div>
-
     {% endfor %}
-{% else %}
-
-{% endif%}
+    {% else %}
+    <!-- Posts from Followed Users -->
+    <div class="row">
+        <div class="col-sm-8">
+            {% for post in posts %}
+            <div class="card my-3">
+                <div class="card-header d-flex align-items-center">
+                    {% if post.author.user_profile.profile_pic %}
+                    <img src="/media/{{ post.author.user_profile.profile_pic }}" alt="" width="40px" height="40px" style="border-radius: 50%;">
+                    {% else %}
+                    <img src="/media/profile_pics/default.jpg" alt="" width="40px" height="40px" style="border-radius: 50%;">
+                    {% endif %}
+                    <a href="{% url 'App_Login:user_profile' username=post.author.username %}" class="ms-2">{{ post.author.username }}</a>
+                </div>
+                <div class="card-body">
+                    {% if post.image %}
+                    <img src="/media/{{ post.image }}" alt="Post Image" class="img-fluid">
+                    {% endif %}
+                    <p class="mt-2">{{ post.caption }}</p>
+                    <div >
+                        {% if post.pk in like_post_list %}
+                        <a href="{% url 'App_Post:unlike_post' pk=post.pk %}"><i class="fa-solid fa-heart" style="font-size: 36px;"></i></a>
+                        {% else %}
+                        <a href="{% url 'App_Post:like_post' pk=post.pk %}"><i class="fa-regular fa-heart" style="font-size: 36px ;"></i></a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <!-- User Profile Sidebar -->
+        <div class="col-sm-4">
+            <div class="card my-3">
+                <div class="card-body text-center">
+                    {% if user.user_profile.profile_pic %}
+                    <img src="/media/{{ user.user_profile.profile_pic }}" alt="" width="80px" height="80px" style="border-radius: 50%;">
+                    {% else %}
+                    <img src="/media/profile_pics/default.jpg" alt="" width="80px" height="80px" style="border-radius: 50%;">
+                    {% endif %}
+                    <h5 class="mt-2">{{ user.username }}</h5>
+                    <p>{{ user.user_profile.full_name }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
 {% endblock %}
